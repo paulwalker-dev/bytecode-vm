@@ -1,0 +1,6 @@
+&libdir = ./lib
+build = $(TUP_CWD)/build
+
+!cp = |> cp %f %o |> $(build)/$(subdir)/%f
+!asm = |> INCLUDE=&(libdir) fasmg %f %o |> $(build)/$(subdir)/%B.bin
+!go = |> go build -o %o ./%f |> $(build)/$(subdir)/%B

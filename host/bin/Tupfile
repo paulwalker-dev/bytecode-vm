@@ -1,0 +1,4 @@
+subdir = host/bin
+include_rules
+
+: emu.go |> !go |>

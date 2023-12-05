@@ -1,0 +1,4 @@
+subdir = boot
+include_rules
+
+: boot.asm |> !asm |>
