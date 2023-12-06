@@ -1,4 +1,4 @@
-subdir = boot
 include_rules
 
-: boot.asm |> !asm |>
+: bios.asm |> !asm |>
+: mbr.asm |> !asm |>

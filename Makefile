@@ -2,6 +2,6 @@ all:
 	@tup
 
 run: all
-	./build/host/bin/emu ./build/boot/boot.bin
+	./host/bin/emu/emu -disk ./boot/mbr.bin
 
 .PHONY: all

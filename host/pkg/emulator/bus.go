@@ -19,6 +19,7 @@ type Bus interface {
 	SetByte(addr uint16, value byte)
 
 	AssignDevice(block uint8, device Device)
+	ListDevices() []uint8
 	GetDevice(block uint8) Device
 	RemoveDevice(block uint8)
 
@@ -33,7 +34,9 @@ type bus struct {
 }
 
 func newBus() Bus {
-	return &bus{}
+	return &bus{
+		devices: make(map[uint8]Device),
+	}
 }
 
 func (b *bus) GetByte(addr uint16) byte {
@@ -65,6 +68,14 @@ func (b *bus) AssignDevice(block uint8, device Device) {
 	if device != nil {
 		b.devices[block] = device
 	}
+}
+
+func (b *bus) ListDevices() []uint8 {
+	ret := []uint8{}
+	for block := range b.devices {
+		ret = append(ret, block)
+	}
+	return ret
 }
 
 func (b *bus) GetDevice(block uint8) Device {

@@ -62,6 +62,10 @@ func (emu *emulator) AssignDevice(block uint8, device Device) {
 	emu.bus.AssignDevice(block, device)
 }
 
+func (emu *emulator) ListDevices() []uint8 {
+	return emu.bus.ListDevices()
+}
+
 func (emu *emulator) GetDevice(block uint8) Device {
 	return emu.bus.GetDevice(block)
 }

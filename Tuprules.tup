@@ -1,6 +1,6 @@
-&libdir = ./lib
-build = $(TUP_CWD)/build
+.gitignore
+root = $(TUP_CWD)
 
-!cp = |> cp %f %o |> $(build)/$(subdir)/%f
-!asm = |> INCLUDE=&(libdir) fasmg %f %o |> $(build)/$(subdir)/%B.bin
-!go = |> go build -o %o ./%f |> $(build)/$(subdir)/%B
+!cp = |> cp %f %o |> %b
+!asm = | $(root)/lib/include/cpu.inc |> INCLUDE=$(root)/lib fasmg %f %o |> %B.bin
+!go = |> go build -o %o ./%f |> %d
