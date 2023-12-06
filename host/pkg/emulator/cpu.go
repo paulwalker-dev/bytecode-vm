@@ -1,7 +1,6 @@
 package emulator
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -15,8 +14,8 @@ type CPU interface {
 	Pause()
 	Reset()
 
-	GetRegister(id int) uint16
-	SetRegister(id int, value uint16)
+	GetRegister(id byte) uint16
+	SetRegister(id byte, value uint16)
 }
 
 type cpu struct {
@@ -27,14 +26,12 @@ type cpu struct {
 	signal  chan bool
 
 	registers [RegisterCount]uint16
-	pc, sp    uint16
 }
 
 const (
-	_ int = -iota
-	PC
+	PC byte = RegisterCount - iota
 	SP
-	lowest
+	BUF
 )
 
 func newCPU(ram RAM) CPU {
@@ -84,51 +81,50 @@ func (p *cpu) loop() {
 	for p.Running() {
 		pc := p.GetRegister(PC)
 		opcode := p.ram.GetByte(pc)
-		start := pc
 		switch opcode {
 		case NOP:
 		case ADD:
-			dest := int(p.ram.GetByte(pc + 1))
-			src1 := p.GetRegister(int(p.ram.GetByte(pc + 2)))
-			src2 := p.GetRegister(int(p.ram.GetByte(pc + 3)))
+			dest := p.ram.GetByte(pc + 1)
+			src1 := p.GetRegister(p.ram.GetByte(pc + 2))
+			src2 := p.GetRegister(p.ram.GetByte(pc + 3))
 			p.SetRegister(dest, src1+src2)
 			pc += 3
 		case IMM:
-			dest := int(p.ram.GetByte(pc + 1))
+			dest := p.ram.GetByte(pc + 1)
 			low := uint16(p.ram.GetByte(pc + 2))
 			high := uint16(p.ram.GetByte(pc + 3))
 			p.SetRegister(dest, high<<8^low)
 			pc += 3
 		case LOAD:
-			dest := int(p.ram.GetByte(pc + 1))
-			addr := p.GetRegister(int(p.ram.GetByte(pc + 2)))
+			dest := p.ram.GetByte(pc + 1)
+			addr := p.GetRegister(p.ram.GetByte(pc + 2))
 			low := uint16(p.ram.GetByte(addr))
 			high := uint16(p.ram.GetByte(addr + 1))
 			p.SetRegister(dest, high<<8|low)
 			pc += 2
 		case STORE:
-			addr := p.GetRegister(int(p.ram.GetByte(pc + 1)))
-			data := p.GetRegister(int(p.ram.GetByte(pc + 2)))
+			addr := p.GetRegister(p.ram.GetByte(pc + 1))
+			data := p.GetRegister(p.ram.GetByte(pc + 2))
 			p.ram.SetByte(addr, uint8(data))
 			p.ram.SetByte(addr+1, uint8(data>>8))
 			pc += 2
 		case MOV:
-			dest := int(p.ram.GetByte(pc + 1))
-			src := int(p.ram.GetByte(pc + 2))
+			dest := p.ram.GetByte(pc + 1)
+			src := p.ram.GetByte(pc + 2)
 			p.SetRegister(dest, p.GetRegister(src))
 			pc += 2
 		case JMP:
 			pc += 1
 		case BEZ:
-			data := p.GetRegister(int(p.ram.GetByte(pc + 1)))
+			data := p.GetRegister(p.ram.GetByte(pc + 1))
 			if data == 0 {
 				opcode = JMP
 			}
 			pc += 2
 		case SUB:
-			dest := int(p.ram.GetByte(pc + 1))
-			src1 := p.GetRegister(int(p.ram.GetByte(pc + 2)))
-			src2 := p.GetRegister(int(p.ram.GetByte(pc + 3)))
+			dest := p.ram.GetByte(pc + 1)
+			src1 := p.GetRegister(p.ram.GetByte(pc + 2))
+			src2 := p.GetRegister(p.ram.GetByte(pc + 3))
 			p.SetRegister(dest, src1-src2)
 			pc += 3
 		case HALT:
@@ -136,14 +132,8 @@ func (p *cpu) loop() {
 		}
 		pc++
 
-		fmt.Printf("%#.4x:", start)
-		for ; start < pc; start++ {
-			fmt.Printf(" %.2x", p.ram.GetByte(start))
-		}
-		fmt.Println()
-
 		if opcode == JMP {
-			pc = p.GetRegister(int(p.ram.GetByte(pc - 1)))
+			pc = p.GetRegister(p.ram.GetByte(pc - 1))
 		}
 
 		p.SetRegister(PC, pc)
@@ -159,34 +149,27 @@ func (p *cpu) Pause() {
 }
 
 func (p *cpu) Reset() {
-	for i := lowest; i < RegisterCount; i++ {
-		p.SetRegister(i+1, 0)
+	for i := 0; i < RegisterCount; i++ {
+		p.SetRegister(byte(i+1), 0)
 	}
 }
 
-func (p *cpu) getRegisterPointer(id int) *uint16 {
-	if id <= 0 {
-		switch id {
-		case PC:
-			return &p.pc
-		case SP:
-			return &p.sp
-		}
-	} else if id <= RegisterCount {
+func (p *cpu) getRegisterPointer(id byte) *uint16 {
+	if 0 < id && id <= RegisterCount {
 		return &p.registers[id-1]
 	}
 	buf := uint16(0)
 	return &buf
 }
 
-func (p *cpu) GetRegister(id int) uint16 {
+func (p *cpu) GetRegister(id byte) uint16 {
 	p.m.RLock()
 	defer p.m.RUnlock()
 
 	return *p.getRegisterPointer(id)
 }
 
-func (p *cpu) SetRegister(id int, value uint16) {
+func (p *cpu) SetRegister(id byte, value uint16) {
 	p.m.Lock()
 	defer p.m.Unlock()
 

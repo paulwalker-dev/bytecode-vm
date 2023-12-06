@@ -1,4 +1,0 @@
-subdir = lib/include
-include_rules
-
-: cpu.inc |> !cp |>

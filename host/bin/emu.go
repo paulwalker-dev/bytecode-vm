@@ -25,6 +25,6 @@ func main() {
 	emu.Wait()
 
 	for i := 1; i <= emulator.RegisterCount; i++ {
-		fmt.Printf("%#.2x: %#.04x\n", i, emu.GetRegister(i))
+		fmt.Printf("%#.2x: %#.04x\n", i, emu.GetRegister(byte(i)))
 	}
 }

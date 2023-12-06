@@ -1,3 +1,7 @@
+PC? equ 16
+SP? equ 15
+BUF? equ 14
+
 macro NOP?
 	db 0x00
 end macro
@@ -40,27 +44,27 @@ macro HALT?
 end macro
 
 macro PUSH? src
-	STORE 16, src
-	IMM 15, 2
-	ADD 16, 16, 15
+	STORE SP, src
+	IMM BUF, 2
+	ADD SP, SP, BUF
 end macro
 
 macro POP? dest
-	IMM 15, 2
-	SUB 16, 16, 15
-	LOAD dest, 16
+	IMM BUF, 2
+	SUB SP, SP, BUF
+	LOAD dest, SP
 end macro
 
 macro CALL? addr
 	local callback
-	IMM 15, callback
-	PUSH 15
-	IMM 15, addr
-	JMP 15
+	IMM BUF, callback
+	PUSH BUF
+	IMM BUF, addr
+	JMP BUF
 	callback:
 end macro
 
 macro RET?
-	POP 15
-	JMP 15
+	POP BUF
+	JMP BUF
 end macro

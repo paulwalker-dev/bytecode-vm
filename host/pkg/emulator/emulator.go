@@ -42,11 +42,11 @@ func (emu *emulator) Reset() {
 	emu.cpu.Reset()
 }
 
-func (emu *emulator) GetRegister(id int) uint16 {
+func (emu *emulator) GetRegister(id byte) uint16 {
 	return emu.cpu.GetRegister(id)
 }
 
-func (emu *emulator) SetRegister(id int, value uint16) {
+func (emu *emulator) SetRegister(id byte, value uint16) {
 	emu.cpu.SetRegister(id, value)
 }
 
