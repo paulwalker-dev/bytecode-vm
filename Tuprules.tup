@@ -1,6 +1,6 @@
 .gitignore
 root = $(TUP_CWD)
 
-!cp = |> cp %f %o |> %b
-!asm = | $(root)/lib/include/cpu.inc |> INCLUDE=$(root)/lib fasmg %f %o |> %B.bin
-!go = |> go build -o %o ./%f |> %d
+!cp = |> ^ CP %o^ cp %f %o |> %b
+!asm = | $(root)/lib/include/cpu.inc |> ^ AS %f^ INCLUDE=$(root)/lib fasmg -n %f %o |> %B.bin
+!go = |> ^ GO %f^ go build -o %o ./%f |> %d

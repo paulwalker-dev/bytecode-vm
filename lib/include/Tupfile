@@ -1,4 +1,4 @@
 include_rules
 
 gencpu = $(root)/host/bin/gencpu/gencpu
-: cpu.txt | $(gencpu) |> $(gencpu) %f %o |> %B.inc
+: cpu.txt | $(gencpu) |> ^ GEN %o^ $(gencpu) %f %o |> %B.inc
