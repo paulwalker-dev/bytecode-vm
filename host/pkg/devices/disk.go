@@ -1,7 +1,7 @@
 package devices
 
 import (
-	"github.com/paulwalker-dev/os/host/pkg/emulator"
+	"github.com/paulwalker-dev/bytecode-vm/host/pkg/emulator"
 	"os"
 )
 

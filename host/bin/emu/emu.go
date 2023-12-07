@@ -4,8 +4,8 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"github.com/paulwalker-dev/os/host/pkg/devices"
-	"github.com/paulwalker-dev/os/host/pkg/emulator"
+	"github.com/paulwalker-dev/bytecode-vm/host/pkg/devices"
+	"github.com/paulwalker-dev/bytecode-vm/host/pkg/emulator"
 )
 
 //go:embed bios.bin
