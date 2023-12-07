@@ -1,7 +1,12 @@
 all:
+	@mkdir -p build
+	@touch build/tup.config
 	@tup
 
 run: all
-	./host/bin/emu/emu -disk ./sys/sys.img
+	./build/host/bin/emu/emu -disk ./build/sys/sys.img
 
-.PHONY: all
+.PHONY: clean
+clean:
+	rm -rf build
+	git clean -fXd

@@ -99,7 +99,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	out, err := os.OpenFile(args[1], os.O_TRUNC|os.O_RDWR|os.O_CREATE, os.ModePerm)
+	out, err := os.OpenFile(args[1], os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

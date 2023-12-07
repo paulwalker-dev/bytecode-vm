@@ -1,15 +1,18 @@
-include "include/cpu.inc"
+	include "include/cpu.inc"
+
 org 0x0000
 
 	jmpl entry
 	nop
 	halt
 
-; 2 Disk device
-; 3 Block id
-; 4 Destination
+; * 1 Buffer
+; * 2 Disk device
+;   3 Block id
+; * 4 Destination
+; * 5 Counter
 loadblock:
-	imm 5, 0x100
+	imm 5, 0x0100
 	store 2, 3
 .loop:
 	load 1, 2
@@ -41,6 +44,8 @@ entry:
 	sub 1, 1, 2
 	imm 2, 0x0100
 	bez 1, 2
+
+fail:
 	imm 14, 0xffff
 	halt
 

@@ -9,6 +9,14 @@ impl done
 def core:mov 02 [ r r ]
 def core:store 10 [ (r) r ]
 def core:load 11 [ r (r) ]
+def common:storeq 12 [ l r ]
+impl imm %pv $1
+impl store %pv $2
+impl done
+def common:loadq 13 [ r l ]
+impl imm %pv $2
+impl load $1 %pv
+impl done
 def core:add 20 [ r r r ]
 def core:sub 21 [ r r r ]
 def core:xor 22 [ r r r ]
@@ -24,12 +32,12 @@ impl store %sp $1
 impl imm %pv 02
 impl add %sp %sp %pv
 impl done
-def common:pop 42 [ r ]
+def common:pop 41 [ r ]
 impl imm %pv 02
 impl sub %sp %sp %pv
 impl load $1 %sp
 impl done
-def common:call 43 [ l ] #1
+def common:call 42 [ l ] #1
 impl local %return
 impl imm #1 %return
 impl push #1
@@ -37,7 +45,7 @@ impl imm #1 $1
 impl jmp #1
 impl return:
 impl done
-def common:ret [ ] #1
+def common:ret 43 [ ] #1
 impl pop #1
 impl jmp #1
 impl done

@@ -1,4 +1,4 @@
 include_rules
 
-: $(root)/boot/bios.bin |> !cp |>
+: $(root)/boot/bios.bin |> !copy |>
 : emu.go | bios.bin |> !go |>
