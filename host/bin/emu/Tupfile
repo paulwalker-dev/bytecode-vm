@@ -1,4 +1,4 @@
 include_rules
 
 : $(root)/boot/bios.bin |> !cp |>
-: main.go | bios.bin |> !go |>
+: emu.go | bios.bin |> !go |>

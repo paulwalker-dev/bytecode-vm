@@ -11,8 +11,8 @@ type Disk interface {
 }
 
 type disk struct {
-	filePath   string
-	block, buf uint16
+	filePath string
+	block    uint16
 }
 
 func NewDisk(path string) Disk {
@@ -38,8 +38,9 @@ func (d *disk) GetByte(addr uint8) byte {
 }
 
 func (d *disk) SetByte(addr uint8, value byte) {
-	d.buf = uint16(value)
-	d.block = d.buf
+	if addr == 0 {
+		d.block = uint16(value)
+	}
 }
 
 func (d *disk) Reset() {}

@@ -9,7 +9,7 @@ org 0x0000
 ; 3 Block id
 ; 4 Destination
 loadblock:
-	imm 5, 0xfe
+	imm 5, 0x100
 	store 2, 3
 .loop:
 	load 1, 2
@@ -26,6 +26,7 @@ loadblock:
 
 entry:
 	imm sp, 0xff00
+
 	imm 2, 0x1000
 	imm 3, 0x0000
 	imm 4, 0x0100
@@ -33,7 +34,14 @@ entry:
 	imm 2, 0x1000
 	imm 3, 0x0001
 	call loadblock
-	jmpl 0x0100
+
+	imm 1, 0x02fe
+	load 1, 1
+	imm 2, 0xaa55
+	sub 1, 1, 2
+	imm 2, 0x0100
+	bez 1, 2
+	imm 14, 0xffff
 	halt
 
 repeat 0x100-($-$$)

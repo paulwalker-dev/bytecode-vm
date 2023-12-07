@@ -18,6 +18,8 @@ loadblock:
 	pop 1
 	ret
 
-repeat 0x200-($-$$)
+repeat 0x1fe-($-$$)
 	nop
 end repeat
+
+	db 0x55, 0xaa
