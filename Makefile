@@ -4,7 +4,7 @@ all:
 	@tup
 
 run: all
-	./build/host/bin/emu/emu -disk ./build/sys/sys.img
+	./build/host/bin/emu -disk ./build/sys/sys.img
 
 .PHONY: clean
 clean:
