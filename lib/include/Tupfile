@@ -1,4 +1,3 @@
 include_rules
 
-: gencpu.go |> !go |>
-: cpu.txt | gencpu |> ^ GEN %o^ ./gencpu %f %o |> %B.inc
+: cpu.txt | $(bin)/gencpu |> ^ GEN %o^ $(bin)/gencpu %f %o |> %B.inc

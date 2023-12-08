@@ -29,5 +29,4 @@ func main() {
 	for i := 1; i <= emulator.RegisterCount; i++ {
 		fmt.Printf("%#.2x: %#.04x\n", i, emu.GetRegister(byte(i)))
 	}
-	fmt.Printf("RET: %#.4x\n", emu.GetByte(emu.GetRegister(emulator.SP)-2))
 }

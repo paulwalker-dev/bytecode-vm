@@ -1,8 +1,6 @@
 package emulator
 
-import (
-	"sync"
-)
+import "sync"
 
 const RegisterCount = 16
 

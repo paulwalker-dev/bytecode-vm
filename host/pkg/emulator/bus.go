@@ -89,9 +89,7 @@ func (b *bus) RemoveDevice(block uint8) {
 	b.m.Lock()
 	defer b.m.Unlock()
 
-	if _, present := b.devices[block]; present {
-		delete(b.devices, block)
-	}
+	delete(b.devices, block)
 }
 
 func (b *bus) Reset() {

@@ -8,9 +8,11 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/paulwalker-dev/bytecode-vm/host/pkg/emulator"
 )
 
-const TOP = 14
+const TOP = int(emulator.BUF)
 
 func parameters(keywords []string) int {
 	i := 0

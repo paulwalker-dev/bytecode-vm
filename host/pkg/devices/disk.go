@@ -1,8 +1,9 @@
 package devices
 
 import (
-	"github.com/paulwalker-dev/bytecode-vm/host/pkg/emulator"
 	"os"
+
+	"github.com/paulwalker-dev/bytecode-vm/host/pkg/emulator"
 )
 
 type Disk interface {
@@ -38,9 +39,7 @@ func (d *disk) GetByte(addr uint8) byte {
 }
 
 func (d *disk) SetByte(addr uint8, value byte) {
-	if addr == 0 {
-		d.block = uint16(value)
-	}
+	d.block = uint16(value)<<8 | d.block>>8
 }
 
 func (d *disk) Reset() {}
